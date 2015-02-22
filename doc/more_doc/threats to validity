@@ -1,0 +1,6 @@
+# How unique our unique IP addresses really are
+
+The script unique.py ensures that our IP addresses are unique before we test with ecn_spider. Ideally, this means that we test an implementation of a web-server only once. This may not always be the case, however:
+
+* A site example.com that has 5 DNS records and returns them in random order migth be tested along with example.net that has the same randomly arranged DNS records. Both are run by the same company, and the DNS records are scrambled at every request to load-balance. If, by chance, in the resolution script two different IP addresses get selected, then this could mean a form of bias: it's obviously the same datacenter tested here, from the same company. But, by chance we resolved to two different IP addresses and tested both.
+Also, repeating the resolution for the same set of domains might mean a different number of duplicates afterwards.

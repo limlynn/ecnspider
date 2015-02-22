@@ -1,0 +1,48 @@
+Hi,
+
+here's some homework for you guys:
+Please take some time to consider the concerns detailed below, and we will discuss them in Friday's meeting.
+
+I've been thinking carefully about the sort of statistics we are gathering with ECN-Spider, and I've come to the conclusion that we have a serious problem with bias. Most of what I'm about to discuss is at this moment present in ECN-Spider because it was never explicitly considered, or assumptions made at one stage of the project later changed. So, it is not a tragedy, it's simply something that we need to discuss now.
+
+In particular, I'd like to highlight three concerns that we need to discuss:
+
+1) What is 'the Internet'?
+Roughly, The goal of this project is to determine what fraction of 'the Internet' supports ECN. We have to agree on a practical and specific definition of 'the Internet' to report our fraction properly.
+
+At the moment, we are mixing two different things, which means that our statistics are wrong. The two ways of looking at things are:
+
+"This fraction of commonly used IP addresses supports ECN."
+"This fraction of commonly used domain names supports ECN."
+
+Of course, as also was discussed on Tue's meeting, maybe even starting out with Alexa's top 1M is bad because of a strong sampling bias. That's yet another issue to be discussed.
+
+1.1) Duplicate IPs get over-selected and under-reported.
+At the moment, our test sample is generated from a list of commonly used domains, but our testing, and the normalization of metrics are performed on a set of IP addresses.
+
+The way things are done now, a fictional CDN called DerpCDN that runs many domains of the top 1M exclusively over one IP address will be:
+a) more likely to have its IP address tested compared to other IPs that are exclusive to one domain
+b) not accurately represented in our metrics, since if multiple domains that resolve to DerpCDN's IP will be represented by just one datapoint (the one IP) in the set we calculated our metrics from (since that is indexed by IP, and not domain).
+
+So, if DerpCDN powered 50 of 100 test domains, and DerpCDN was the only agent left with ECN issues, we would currently report 50/51 of the Internet supporting ECN, when in reality it would be only 50/100. Since we had 16% of IP address duplicates in our last test data set of 102k domains, we have a magnitude that has the potential to skew our metrics. Also, at the moment IP filtering is performed based on IPv4 addresses only, which is yet another source of bias unaccounted for (in the IPv6 addresses).
+
+2) IPv4 and IPv6 combined metrics are problematic.
+For some of the tested domains we have both an IPv4 and an IPv6 address. As long as we do not know that there is no causal relationship between ECN support for the two IP addresses (which seems unlikely, since they're both controlled by the same company, after all), this introduced a bias into our combined 4/6 metrics:
+A domain that has two IPs is represented with double weight in combined metrics.
+If we assume that cases exist where the ECN behavior for one domain may be different for IPv4 and IPv6 addresses (seems a reasonable assumption to me), then I do not see a good way to have combined statistics for IPv4 and 6 at all.
+
+One way we could have unbiased 'combined' metrics would be to test only one IP per domain, and randomly select whether it is the IPv4 or 6 for a given domain. Of course, since there are so few IPv6 addresses in the top 1M, we would need to resolve a very large number of domains. We can not just pick domains from among the ones that we know support IPv6, since that would potentially introduce bias.
+
+3) We need to think carefully about 'response ratio'.
+At the moment, we 'throw out' domains from our original domain sample when they don't resolve to an A record. In sociology these would be the non-respondent participants of our study. For the last test this was about 2%.
+We have to keep track of test subject we 'lose' along the process of testing like this, since there might be a causal relationship between non-response and ECN-related behavior.
+At the very least, we have to clearly report at what stage, and for what reasons we miss test subjects.
+And, of course, the DNS resolution might not be the only place where we discard test subjects.
+
+For these reasons I must concede that the metrics shown at the presentation on Tue were derived using a flawed testing methodology, and should not be viewed as true.
+
+Also, of course, feel free to expand this list of issues.
+
+Cheers,
+
+Damiano

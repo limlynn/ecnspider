@@ -1,0 +1,56 @@
+'''
+c0 =^ error message for the ECN off connect (string)
+c1 =^ error message for the ECN on connect (string)
+E0 =^ state of ECN of the ECN off connection determined by TCPDump (bool)
+E1 =^ state of ECN of the ECN on connection determined by TCPDump (bool)
+
+The known errors are: timeout refused no_route denied invalid unreachable
+
+FIXME What to do with 'denied' errors?
+Multicast stuff, or things.
+
+FIXME Unreachable is not a transient error: treat like refused.
+
+FIXME Can information from other vantage points be relevant for the decision of retries?
+'''
+
+if c0 == c1 == '':
+	if E0 == False and E1 == True:
+		print('Everything working.')
+	if E0 == False and E1 == False:
+		print('ECN refused, but working.')
+	else:
+		print('ECN broken: server enabled ECN when not advertised.')
+
+elif c0 == c1 in 'invalid,no_route'.split(','):
+	print('Ignore this test.')
+elif c0 == 'invalid' or c1 == 'invalid':
+	# Invalid args so far were link-local IPv6 addresses, if one connect has a different behavior, something is very wrong.
+	print('Manual interaction.')
+elif c0 == 'no_route' or c1 == 'no_route':
+	# Routing information availability isn't a function of ECN usage, something is very wrong.
+	print('Manual interaction.')
+
+elif c0 == c1 == 'refused':
+	print('Ignore this test.')
+elif c0 == 'refused':
+	# For both connects the server was reachable, but the behavior was different. Find out what's going on.
+	print('Try tracebox.')
+elif c1 == 'refused':
+	print('Try tracebox.')
+	print('ECN broken server-side.')
+
+elif c0 == 'timeout,unreachable'.split(',') or c1 == 'timeout,unreachable'.split(','):
+	# If at least one has issues, make sure it isn't transient.
+	print('Retry.')
+	# After a few retries:
+	#	If both connects persistently have the same error in each retry: Ignore this test.
+	#	If one of the two connects persistently has the same errors: tracebox
+	#	FIXME: Not sure that covers everything here
+
+else:
+	raise Exception()
+
+# This allows the generation of statistics from one vantage point. Once each vantage point has determined the ECN-state for each domain, they can be combined to answer:
+# * Which domains can be reached by ECN from anywhere?
+# * Which domains can be reached by ECN from everywhere?

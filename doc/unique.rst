@@ -1,0 +1,5 @@
+Unique
+******
+
+.. automodule:: unique
+   :members:
