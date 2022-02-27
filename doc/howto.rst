@@ -40,16 +40,16 @@ With input files like Alexa's top 1M list, ``resolved.csv`` will now contain man
 
 The list now has the following format::
 
-    1,www.google.com,173.194.40.52,2a00:1450:400a:804::1013
-    2,www.facebook.com,31.13.91.2,2a03:2880:f01b:1:face:b00c:0:1
-    3,www.youtube.com,173.194.40.32,2a00:1450:400a:804::1002
-    4,www.yahoo.com,46.228.47.115,2a00:1288:f006:1fe::3001
-    5,www.baidu.com,180.76.3.151,
-    6,www.wikipedia.org,91.198.174.192,2620:0:862:ed1a::1
-    7,www.qq.com,80.239.148.10,
-    8,www.twitter.com,199.16.156.38,
-    9,www.linkedin.com,108.174.2.129,
-    10,www.taobao.com,195.27.31.241,
+1,www.google.com,173.194.40.52,2a00:1450:400a:804::1013
+2,www.facebook.com,31.13.91.2,2a03:2880:f01b:1:face:b00c:0:1
+3,www.youtube.com,173.194.40.32,2a00:1450:400a:804::1002
+4,www.yahoo.com,46.228.47.115,2a00:1288:f006:1fe::3001
+5,www.baidu.com,180.76.3.151,
+6,www.wikipedia.org,91.198.174.192,2620:0:862:ed1a::1
+7,www.qq.com,80.239.148.10,
+8,www.twitter.com,199.16.156.38,
+9,www.linkedin.com,108.174.2.129,
+10,www.taobao.com,195.27.31.241,
 
 Note that in this particular example, the option ``--www preferred`` for the resolution script has led to most domains in ``input.csv`` to now have a prepended ``www.``.
 
@@ -61,7 +61,10 @@ Now that the input file has been prepared, I can run ``ecn_spider``. Before I st
 
 And now::
 
-    ecn$ python ./ecn_spider.py --verbosity INFO --workers 64 --timeout 4 ./input.csv ./retry.csv ./ecn-spider.csv ./ecn-spider.log
+    ecn$ 
+    
+    
+sudo python3 ecn_spider.py --verbosity INFO --workers 1 --timeout 1 ./atl.csv ./retry.csv ./ecn-spider.csv ./ecn-spider.log --no-tcpdump-check
 
 This run creates three output files:
     ``retry.csv``:

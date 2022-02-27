@@ -18,19 +18,19 @@ To give the user ``ecn`` the privileges to change the ECN behavior, the configur
 
 The following listing shows the complete configuration file (with some comments removed) after editing::
 
-    Defaults        env_reset
-    Defaults        mail_badpass
-    Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Defaults        env_reset
+Defaults        mail_badpass
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-    # User privilege specification
-    root    ALL=(ALL:ALL) ALL
-    ecn ALL=NOPASSWD: /sbin/sysctl -w net.ipv4.tcp_ecn=[0-2]
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+ecn ALL=NOPASSWD: /sbin/sysctl -w net.ipv4.tcp_ecn=[0-2]
 
-    # Members of the admin group may gain root privileges
-    %admin ALL=(ALL) ALL
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
 
-    # Allow members of group sudo to execute any command
-    %sudo   ALL=(ALL:ALL) ALL
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
 
 The line starting with ``ecn``... was added to the existing configuration. Now, the user ``ecn`` can change the necessary settings::
 
@@ -53,7 +53,7 @@ First, I download Python's source code and unpack it::
 
 Some of Python's optional dependencies should be installed::
 
-    root$ apt-get install build-essential libbz2-dev libsqlite3-dev libreadline-dev zlib1g-dev libncurses5-dev libssl-dev libgdbm-dev liblzma-dev tk-dev
+    root$ apt-get install python3 python3-pip build-essential libbz2-dev libsqlite3-dev libreadline-dev zlib1g-dev libncurses5-dev libssl-dev libgdbm-dev liblzma-dev tk-dev -y
 
 Now, Python can be compiled::
 

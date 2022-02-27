@@ -18,10 +18,10 @@ The fields have the following meanings:
 
 This is a sample input file snippet::
 
-    www.mail.ru,94.100.180.70,
-    www.ask.com,184.29.106.11,
-    www.google.it,173.194.43.31,2607:f8b0:4006:802::1018
-    www.tmall.com,220.181.113.241,
-    www.sina.com.cn,58.63.236.31,
-    www.google.fr,173.194.43.23,2607:f8b0:4006:802::1017
+www.mail.ru,94.100.180.70,
+www.ask.com,184.29.106.11,
+www.google.it,173.194.43.31,2607:f8b0:4006:802::1018
+www.tmall.com,220.181.113.241,
+www.sina.com.cn,58.63.236.31,
+www.google.fr,173.194.43.23,2607:f8b0:4006:802::1017
     www.example.com,,
